@@ -18,7 +18,6 @@ package io.gravitee.repository.mongodb.management;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
-import com.mongodb.client.gridfs.GridFSFindIterable;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 import io.gravitee.repository.media.api.MediaRepository;
@@ -27,23 +26,17 @@ import org.bson.BsonString;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
-import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.exists;
-import static com.mongodb.client.model.Filters.not;
+import static com.mongodb.client.model.Filters.*;
 
 /**
  * @author Guillaume GILLON
@@ -52,7 +45,7 @@ import static com.mongodb.client.model.Filters.not;
 public class MongoMediaRepository implements MediaRepository {
 
     @Autowired
-    private MongoDbFactory mongoFactory;
+    private MongoDatabaseFactory mongoFactory;
 
     @Autowired
     private MappingMongoConverter converter;
@@ -67,7 +60,7 @@ public class MongoMediaRepository implements MediaRepository {
                 .append("size", media.getSize())
                 .append("hash", media.getHash());
 
-        if(media.getApi() != null) {
+        if (media.getApi() != null) {
             doc.append("api", media.getApi());
         }
 
@@ -76,10 +69,10 @@ public class MongoMediaRepository implements MediaRepository {
 
         getGridFs()
                 .uploadFromStream(
-                    new BsonString(media.getId()),
-                    media.getFileName(),
-                    new ByteArrayInputStream(media.getData()),
-                    options
+                        new BsonString(media.getId()),
+                        media.getFileName(),
+                        new ByteArrayInputStream(media.getData()),
+                        options
                 );
 
         return media.getId();
@@ -134,7 +127,7 @@ public class MongoMediaRepository implements MediaRepository {
                 e.printStackTrace();
             }
             imageData.setData(result);
-            }
+        }
 
         return Optional.ofNullable(imageData);
     }
@@ -173,7 +166,7 @@ public class MongoMediaRepository implements MediaRepository {
 
     private GridFSBucket getGridFs() {
 
-        MongoDatabase db = mongoFactory.getDb();
+        MongoDatabase db = mongoFactory.getMongoDatabase();
         String bucketName = "media";
         return GridFSBuckets.create(db, bucketName);
     }

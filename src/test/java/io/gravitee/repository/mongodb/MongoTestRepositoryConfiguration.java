@@ -15,8 +15,8 @@
  */
 package io.gravitee.repository.mongodb;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import io.gravitee.repository.mongodb.common.AbstractRepositoryConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -53,7 +53,7 @@ public class MongoTestRepositoryConfiguration extends AbstractRepositoryConfigur
     @Override
     @Bean
     public MongoClient mongoClient() {
-        return new MongoClient(new MongoClientURI(embeddedMongoDb.getReplicaSetUrl()));
+        return MongoClients.create(embeddedMongoDb.getReplicaSetUrl());
     }
 
     @Bean(name = "managementMongoTemplate")

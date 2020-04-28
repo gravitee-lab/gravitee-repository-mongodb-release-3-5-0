@@ -42,7 +42,7 @@ public class PageMongoRepositoryImpl implements PageMongoRepositoryCustom {
 	public int findMaxPageReferenceIdAndReferenceTypeOrder(String referenceId, String referenceType) {
 		Query query = new Query();
 		query.limit(1);
-		query.with(new Sort(Sort.Direction.DESC, "order"));
+		query.with(Sort.by(Sort.Direction.DESC, "order"));
 		query.addCriteria(where("referenceType").is(referenceType).and("referenceId").is(referenceId));
 
 		PageMongo page = mongoTemplate.findOne(query, PageMongo.class);
@@ -80,7 +80,7 @@ public class PageMongoRepositoryImpl implements PageMongoRepositoryCustom {
 			}
 		}
 
-		q.with(new Sort(ASC, "order"));
+		q.with(Sort.by(ASC, "order"));
 
 		return mongoTemplate.find(q, PageMongo.class);
 	}

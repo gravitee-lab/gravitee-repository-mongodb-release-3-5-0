@@ -34,13 +34,12 @@
     <properties>
         <gravitee-repository.version>3.1.0</gravitee-repository.version>
         <gravitee-repository-test.version>3.1.0</gravitee-repository-test.version>
-        <testcontainers.version>1.14.3</testcontainers.version>
-        <mongo.version>3.12.0</mongo.version>
-        <mongodb-driver-reactivestreams.version>1.13.0</mongodb-driver-reactivestreams.version>
-        <spring.data.mongodb.version>2.1.5.RELEASE</spring.data.mongodb.version>
+        <mongo.version>4.0.4</mongo.version>
+        <spring.data.mongodb.version>3.0.0.RELEASE</spring.data.mongodb.version>
         <dozer.version>6.4.1</dozer.version>
         <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
-        <snakeyaml.version>1.21</snakeyaml.version>
+        <testcontainers.version>1.14.3</testcontainers.version>
+        <spring.version>5.2.6.RELEASE</spring.version>
     </properties>
 
     <dependencies>
@@ -134,14 +133,14 @@
 
         <dependency>
             <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
+            <artifactId>mongodb-driver-sync</artifactId>
             <version>${mongo.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-reactivestreams</artifactId>
-            <version>${mongodb-driver-reactivestreams.version}</version>
+            <version>${mongo.version}</version>
         </dependency>
 
         <!-- Test dependencies -->

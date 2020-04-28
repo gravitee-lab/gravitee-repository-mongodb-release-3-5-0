@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -47,7 +46,7 @@ public class UserMongoRepositoryImpl implements UserMongoRepositoryCustom {
         Query query = new Query();
         if (criteria != null) {
             if (criteria.getStatuses() != null && criteria.getStatuses().length > 0) {
-                query.addCriteria(where("status").in(criteria.getStatuses()));
+                query.addCriteria(where("status").in((Object[])criteria.getStatuses()));
             }
 
             if (criteria.hasNoStatus()) {
@@ -61,7 +60,7 @@ public class UserMongoRepositoryImpl implements UserMongoRepositoryCustom {
                 query.addCriteria(where("referenceType").is(criteria.getReferenceType().name()));
             }
         }
-        query.with(new Sort(Sort.Direction.ASC, "lastname", "firstname"));
+        query.with(Sort.by(Sort.Direction.ASC, "lastname", "firstname"));
         if (pageable != null) {
             query.with(PageRequest.of(pageable.pageNumber(), pageable.pageSize()));
         }
